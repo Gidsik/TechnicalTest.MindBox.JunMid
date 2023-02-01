@@ -75,7 +75,7 @@ public class TriangleTests
 	{
 		Triangle triangle = new Triangle(side1, side2, side3);
 
-		var result = triangle.IsRight;
+		var result = triangle.IsRightAngled;
 
 		Assert.True(result);
 	}
@@ -87,7 +87,7 @@ public class TriangleTests
 	{
 		Triangle triangle = new Triangle(side1, side2, side3);
 
-		var result = triangle.IsRight;
+		var result = triangle.IsRightAngled;
 
 		Assert.False(result);
 	}

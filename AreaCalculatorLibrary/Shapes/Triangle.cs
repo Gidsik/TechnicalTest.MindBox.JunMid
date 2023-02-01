@@ -13,7 +13,7 @@ public class Triangle : IShapeWithArea
 	/// <summary>
 	/// True - if Triangle is right-angled, right-angleness calculates with precision of 5
 	/// </summary>
-	public readonly bool IsRight;
+	public readonly bool IsRightAngled;
 
 	/// <summary>
 	/// Given sides sizes of a triangle, sorted descending 
@@ -38,9 +38,9 @@ public class Triangle : IShapeWithArea
 
 		if (Sides[0] >= Sides[1] + Sides[2]) throw new ArgumentOutOfRangeException(nameof(Sides), Sides, "Biggest side of triangle must be always lesser than the sum of two lesser sides");
 
-		IsRight = CheckIfRight();
+		IsRightAngled = CheckIfRightAngled();
 
-		if (IsRight) {
+		if (IsRightAngled) {
 			_area = CalculateAreaByTwoSides();
 		}
 		else
@@ -87,7 +87,7 @@ public class Triangle : IShapeWithArea
 	//}
 
 
-	private bool CheckIfRight() => Math.Abs(Math.Pow(Sides[0], 2) - (Math.Pow(Sides[1], 2) + Math.Pow(Sides[2], 2))) < 0.00001;
+	private bool CheckIfRightAngled() => Math.Abs(Math.Pow(Sides[0], 2) - (Math.Pow(Sides[1], 2) + Math.Pow(Sides[2], 2))) < 0.00001;
 
 	private double CalculateAreaByThreeSides()
 	{
