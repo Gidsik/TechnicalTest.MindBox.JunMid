@@ -11,6 +11,11 @@ public class Triangle : IShapeWithArea
 	private double _area;
 
 	/// <summary>
+	/// True - if Triangle is right-angled, right-angleness calculates with precision of 5
+	/// </summary>
+	public readonly bool IsRight;
+
+	/// <summary>
 	/// Given sides sizes of a triangle, sorted descending 
 	/// </summary>
 	public double[] Sides { get; private set; }
@@ -23,16 +28,24 @@ public class Triangle : IShapeWithArea
 	/// <param name="side3"></param>
 	public Triangle(double side1, double side2, double side3)
 	{
+		if (side1 <= 0) throw new ArgumentOutOfRangeException(nameof(side1), side1, "Sides can't be less or equal to zero");
+		if (side2 <= 0) throw new ArgumentOutOfRangeException(nameof(side2), side2, "Sides can't be less or equal to zero");
+		if (side3 <= 0) throw new ArgumentOutOfRangeException(nameof(side3), side3, "Sides can't be less or equal to zero");
+
 		Sides = new double[3] {side1, side2, side3};
 
 		Array.Sort(Sides, (x,y) => y.CompareTo(x));
 
-		if (IsRight()) {
-			CalculateAreaByTwoSides();
+		if (Sides[0] >= Sides[1] + Sides[2]) throw new ArgumentOutOfRangeException(nameof(Sides), Sides, "Biggest side of triangle must be always lesser than the sum of two lesser sides");
+
+		IsRight = CheckIfRight();
+
+		if (IsRight) {
+			_area = CalculateAreaByTwoSides();
 		}
 		else
 		{
-			CalculateAreaByThreeSides();
+			_area = CalculateAreaByThreeSides();
 		}
 	}
 
@@ -74,22 +87,13 @@ public class Triangle : IShapeWithArea
 	//}
 
 
-	/// <summary>
-	/// Calculates if this triangle is right
-	/// </summary>
-	/// <returns>true - if triange is right; false - if not</returns>
-	private bool IsRight() => (Math.Pow(Sides[0], 2) == Math.Pow(Sides[1], 2) + Math.Pow(Sides[2], 2));
+	private bool CheckIfRight() => Math.Abs(Math.Pow(Sides[0], 2) - (Math.Pow(Sides[1], 2) + Math.Pow(Sides[2], 2))) < 0.00001;
 
-	private void CalculateAreaByThreeSides()
+	private double CalculateAreaByThreeSides()
 	{
+		double semiPerimeter = Sides.Sum() / 2;
 
-		double semiPerimeter = Sides.Sum();
-
-		_area = Math.Sqrt(semiPerimeter * (semiPerimeter - Sides[0]) * (semiPerimeter - Sides[1]) * (semiPerimeter - Sides[2]));
+		return Math.Sqrt(semiPerimeter * (semiPerimeter - Sides[0]) * (semiPerimeter - Sides[1]) * (semiPerimeter - Sides[2]));
 	}
-
-	private void CalculateAreaByTwoSides()
-	{
-		_area = 0.5 * Sides[1] + Sides[2];
-	}
+	private double CalculateAreaByTwoSides() => 0.5 * Sides[1] * Sides[2];
 }

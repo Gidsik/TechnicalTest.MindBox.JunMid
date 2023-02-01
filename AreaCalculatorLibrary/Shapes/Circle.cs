@@ -21,6 +21,8 @@ public class Circle : IShapeWithArea
 	/// <param name="radius">radius of a circle</param>
 	public Circle(double radius)
 	{
+		if (radius <= 0) throw new ArgumentOutOfRangeException(nameof(radius), radius, "Radius can't be less or equal to zero");
+
 		Radius = radius;
 		CalculateAreaByRadius();
 	}
